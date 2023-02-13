@@ -1,0 +1,165 @@
+﻿<Page x:Class="CreationStore.Pages.MainPage.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CreationStore.Pages.MainPage"
+      mc:Ignorable="d" Width="Auto" VerticalAlignment="Stretch" Height="auto"
+      Title="MainPage">
+
+    <Grid Loaded="productsGrid_Loaded" x:Name="productsGrid" VerticalAlignment="Top" Height="auto" Width="1000">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Панель управления -->
+        <Grid Grid.Row="0" HorizontalAlignment="Stretch" Width="Auto" Margin="0,0,0,30">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- ComboBoxes -->
+            <Grid Grid.Row="0" Grid.Column="0" Margin="0,0,0,15">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="206.273"/>
+                    <ColumnDefinition Width="123.727"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Сортировка -->
+                <ComboBox x:Name="SortingBox" SelectionChanged="SortingBox_SelectionChanged" 
+                          Grid.Column="0" Width="300" Padding="10" Margin="0,0,30,0" Grid.ColumnSpan="2">
+                    <ComboBoxItem Content="По убыванию" Tag="1"></ComboBoxItem>
+                    <ComboBoxItem Content="По возрастанию" Tag="2"></ComboBoxItem>
+                </ComboBox>
+
+                <!-- Фильтрация -->
+                <ComboBox x:Name="Filtration" SelectionChanged="Filtration_SelectionChanged_1"
+                          Grid.Column="2" Width="300" Padding="10"></ComboBox>
+            </Grid>
+
+            <!-- Строка поиска -->
+            <TextBox x:Name="SearchField" TextChanged="SearchField_TextChanged" Margin="0,0,0,15"
+                     Style="{DynamicResource TextBoxHover}" FontFamily="Century Gothic" FontSize="12" FontWeight="Regular"
+                     Width="Auto" Grid.Row="1" Grid.Column="0" Padding="10">
+                <TextBox.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="7"/>
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+
+            <!-- Вывод количества страниц -->
+            <TextBlock x:Name="CountProducts" Text="0/0" Grid.Column="1" Grid.Row="1" Padding="30, 10, 30, 10"/>
+
+            <!-- Кнопки управления -->
+            <Grid Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" Width="auto" VerticalAlignment="Center" x:Name="gridTools" Visibility="Collapsed">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Кнопка Добавить -->
+                <Button Style="{DynamicResource ButtonHover}" Content="Добавить" Grid.Column="0"
+                    FontFamily="Century Gothic" FontSize="12" Foreground="white" Margin="0,0,30,0"
+                    x:Name="AddButton" Click="AddButton_Click" BorderThickness="0" 
+                    Padding="10" HorizontalAlignment="Stretch" Width="auto">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="7"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+                <!-- Кнопка Редактировать -->
+                <Button Style="{DynamicResource ButtonHover}" Content="Редактировать" Grid.Column="1"
+                    FontFamily="Century Gothic" FontSize="12" Foreground="white" Margin="0,0,30,0"
+                    x:Name="EditButton" Click="EditButton_Click" BorderThickness="0" 
+                    Padding="10" HorizontalAlignment="Stretch" Width="auto">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="7"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+                <!-- Кнопка Удалить -->
+                <Button Style="{DynamicResource RedButtonHover}" Content="Удалить" Grid.Column="2"
+                    FontFamily="Century Gothic" FontSize="12" Foreground="white"
+                    x:Name="DeleteButton" Click="DeleteButton_Click" BorderThickness="0" 
+                    Padding="10" HorizontalAlignment="Stretch" Width="auto">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="7"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </Grid>
+        </Grid>
+
+        <!-- Список товаров -->
+        <ListView Grid.Row="1" x:Name="ProductList" HorizontalAlignment="Stretch" Width="auto" Height="auto" MinHeight="300">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="15">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="600"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <!-- Изображение товара -->
+                        <Image Width="70" Height="70" Stretch="UniformToFill" Grid.Column="0"
+                               Source="pack://application:,,,/source/logo.png" Margin="0,0,30,0"/>
+                        
+                        <!-- Текстовая часть -->
+                        <Grid Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center">
+
+                            <!-- Описание товара -->
+                            <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" FontFamily="Century Gothic" FontSize="12" FontWeight="Bold" Text="{Binding ProductName}" TextWrapping="Wrap"/>
+                                <TextBlock Grid.Row="1" FontFamily="Century Gothic" FontSize="12" FontWeight="Regular" Text ="{Binding ProductDescription}"  TextWrapping="Wrap"/>
+                                <TextBlock Grid.Row="2" FontFamily="Century Gothic" FontSize="12" FontWeight="Regular" Text ="{Binding ProductManufacturer}"  TextWrapping="Wrap"/>
+                                <TextBlock Grid.Row="3" FontFamily="Century Gothic" FontSize="12" FontWeight="Bold" Foreground="{StaticResource AccentColor}" Text ="{Binding ProductCost}" TextWrapping="Wrap"/>
+                            </Grid>
+                        </Grid>
+
+                        <!-- Наличие товара -->
+                        <Grid Grid.Column="2" Margin="30,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/> 
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text ="В наличие:" FontFamily="Century Gothic" FontSize="12" FontWeight="Regular" Padding="0,0,5,0"/>
+                            <TextBlock Grid.Column="1" x:Name="Quantity" FontFamily="Century Gothic" FontSize="12" Foreground="{StaticResource AccentColor}" 
+                                           Text ="{Binding ProductQuantityInStock}" TextWrapping="Wrap"/>
+                        </Grid>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+    </Grid>
+</Page>

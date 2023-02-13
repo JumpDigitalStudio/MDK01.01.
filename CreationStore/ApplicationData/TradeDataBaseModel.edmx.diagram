@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c12fadbed7704406af7e30565a6333ca" Name="Diagram1" ZoomLevel="74">
+        <EntityTypeShape EntityType="TradeModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TradeModel.Client" Width="1.5" PointX="3" PointY="1.25" />
+        <EntityTypeShape EntityType="TradeModel.Order" Width="1.5" PointX="5.25" PointY="1.375" />
+        <EntityTypeShape EntityType="TradeModel.PickupPoint" Width="1.5" PointX="3" PointY="5.875" />
+        <EntityTypeShape EntityType="TradeModel.Product" Width="1.5" PointX="7.5" PointY="1" />
+        <EntityTypeShape EntityType="TradeModel.ProductCategories" Width="1.5" PointX="5.25" PointY="5.875" />
+        <EntityTypeShape EntityType="TradeModel.Role" Width="1.5" PointX="0.75" PointY="1.875" />
+        <AssociationConnector Association="TradeModel.FK__User__UserRole__267ABA7A" />
+        <AssociationConnector Association="TradeModel.FK_Order_Client" />
+        <AssociationConnector Association="TradeModel.FK_Order_PickupPoint" />
+        <AssociationConnector Association="TradeModel.FK_Product_ProductCategories" />
+        <AssociationConnector Association="TradeModel.OrderProduct" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

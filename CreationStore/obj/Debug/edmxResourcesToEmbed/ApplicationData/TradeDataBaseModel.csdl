@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TradeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityContainer Name="TradeEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="Client" EntityType="TradeModel.Client" />
+    <EntitySet Name="Order" EntityType="TradeModel.Order" />
+    <EntitySet Name="PickupPoint" EntityType="TradeModel.PickupPoint" />
+    <EntitySet Name="Product" EntityType="TradeModel.Product" />
+    <EntitySet Name="ProductCategories" EntityType="TradeModel.ProductCategories" />
+    <EntitySet Name="Role" EntityType="TradeModel.Role" />
+    <AssociationSet Name="FK__User__UserRole__267ABA7A" Association="TradeModel.FK__User__UserRole__267ABA7A">
+      <End Role="Role" EntitySet="Role" />
+      <End Role="Client" EntitySet="Client" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_Client" Association="TradeModel.FK_Order_Client">
+      <End Role="Client" EntitySet="Client" />
+      <End Role="Order" EntitySet="Order" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_PickupPoint" Association="TradeModel.FK_Order_PickupPoint">
+      <End Role="PickupPoint" EntitySet="PickupPoint" />
+      <End Role="Order" EntitySet="Order" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Product_ProductCategories" Association="TradeModel.FK_Product_ProductCategories">
+      <End Role="ProductCategories" EntitySet="ProductCategories" />
+      <End Role="Product" EntitySet="Product" />
+    </AssociationSet>
+    <AssociationSet Name="OrderProduct" Association="TradeModel.OrderProduct">
+      <End Role="Order" EntitySet="Order" />
+      <End Role="Product" EntitySet="Product" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Client">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserSurname" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="UserPatronymic" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="UserLogin" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="UserPassword" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="UserRole" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Role" Relationship="TradeModel.FK__User__UserRole__267ABA7A" FromRole="Client" ToRole="Role" />
+    <NavigationProperty Name="Order" Relationship="TradeModel.FK_Order_Client" FromRole="Client" ToRole="Order" />
+  </EntityType>
+  <EntityType Name="Order">
+    <Key>
+      <PropertyRef Name="OrderID" />
+    </Key>
+    <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrderStatus" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="OrderDeliveryDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="OrderPickupPoint" Type="Int32" Nullable="false" />
+    <Property Name="OrderUserID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Client" Relationship="TradeModel.FK_Order_Client" FromRole="Order" ToRole="Client" />
+    <NavigationProperty Name="PickupPoint" Relationship="TradeModel.FK_Order_PickupPoint" FromRole="Order" ToRole="PickupPoint" />
+    <NavigationProperty Name="Product" Relationship="TradeModel.OrderProduct" FromRole="Order" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="PickupPoint">
+    <Key>
+      <PropertyRef Name="PointID" />
+    </Key>
+    <Property Name="PointID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PointName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Order" Relationship="TradeModel.FK_Order_PickupPoint" FromRole="PickupPoint" ToRole="Order" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="ProductArticleNumber" />
+    </Key>
+    <Property Name="ProductArticleNumber" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ProductName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ProductDescription" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ProductCategory" Type="Int32" />
+    <Property Name="ProductPhoto" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="ProductManufacturer" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="ProductCost" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="ProductDiscountAmount" Type="Byte" />
+    <Property Name="ProductQuantityInStock" Type="Int32" Nullable="false" />
+    <Property Name="ProductStatus" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ProductCategories" Relationship="TradeModel.FK_Product_ProductCategories" FromRole="Product" ToRole="ProductCategories" />
+    <NavigationProperty Name="Order" Relationship="TradeModel.OrderProduct" FromRole="Product" ToRole="Order" />
+  </EntityType>
+  <EntityType Name="ProductCategories">
+    <Key>
+      <PropertyRef Name="CategoryID" />
+    </Key>
+    <Property Name="CategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Product" Relationship="TradeModel.FK_Product_ProductCategories" FromRole="ProductCategories" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="Role">
+    <Key>
+      <PropertyRef Name="RoleID" />
+    </Key>
+    <Property Name="RoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RoleName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Client" Relationship="TradeModel.FK__User__UserRole__267ABA7A" FromRole="Role" ToRole="Client" />
+  </EntityType>
+  <Association Name="FK__User__UserRole__267ABA7A">
+    <End Type="TradeModel.Role" Role="Role" Multiplicity="1" />
+    <End Type="TradeModel.Client" Role="Client" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="RoleID" />
+      </Principal>
+      <Dependent Role="Client">
+        <PropertyRef Name="UserRole" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_Client">
+    <End Type="TradeModel.Client" Role="Client" Multiplicity="1" />
+    <End Type="TradeModel.Order" Role="Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="OrderUserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_PickupPoint">
+    <End Type="TradeModel.PickupPoint" Role="PickupPoint" Multiplicity="1" />
+    <End Type="TradeModel.Order" Role="Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PickupPoint">
+        <PropertyRef Name="PointID" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="OrderPickupPoint" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Product_ProductCategories">
+    <End Type="TradeModel.ProductCategories" Role="ProductCategories" Multiplicity="0..1" />
+    <End Type="TradeModel.Product" Role="Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductCategories">
+        <PropertyRef Name="CategoryID" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="ProductCategory" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="OrderProduct">
+    <End Type="TradeModel.Order" Role="Order" Multiplicity="*" />
+    <End Type="TradeModel.Product" Role="Product" Multiplicity="*" />
+  </Association>
+</Schema>
